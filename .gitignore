@@ -1,2 +1,18 @@
+# Virtual Environment
+venv/
+
+# Environment
 .env
-/venv
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Database
+*.db
+
+# VS Code
+.vscode/
+
+# Linux
+.DS_Store
