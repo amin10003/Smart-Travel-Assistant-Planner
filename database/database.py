@@ -14,21 +14,21 @@ class DatabaseManager:
     def create_table(self):
 
         self.cursor.execute("""
-        CREATE TABLE IF NOT EXISTS travel_plan(
+            CREATE TABLE IF NOT EXISTS travel_plan(
 
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-            destination TEXT,
+                destination TEXT,
 
-            travel_date TEXT,
+                travel_date TEXT,
 
-            weather TEXT,
+                weather TEXT,
 
-            estimated_fare REAL,
+                estimated_fare REAL,
 
-            notes TEXT
-        )
-        """)
+                notes TEXT
+            )
+            """)
 
         self.connection.commit()
 
@@ -36,16 +36,22 @@ class DatabaseManager:
 
         self.cursor.execute(
             """
-        INSERT INTO travel_plan(
-            destination,
-            travel_date,
-            weather,
-            estimated_fare,
-            notes
-        )
+            INSERT INTO travel_plan(
 
-        VALUES (?, ?, ?, ?, ?)
-        """,
+                destination,
+
+                travel_date,
+
+                weather,
+
+                estimated_fare,
+
+                notes
+
+            )
+
+            VALUES (?, ?, ?, ?, ?)
+            """,
             (
                 trip.destination,
                 trip.travel_date,
@@ -60,7 +66,27 @@ class DatabaseManager:
     def get_all_trips(self):
 
         self.cursor.execute("""
-        SELECT * FROM travel_plan
-        """)
+            SELECT * FROM travel_plan
+            """)
 
         return self.cursor.fetchall()
+
+    def delete_trip(self, trip_id):
+
+        self.cursor.execute(
+            """
+            DELETE FROM travel_plan
+            WHERE id=?
+            """,
+            (trip_id,),
+        )
+
+        self.connection.commit()
+
+    def clear_history(self):
+
+        self.cursor.execute("""
+            DELETE FROM travel_plan
+            """)
+
+        self.connection.commit()
