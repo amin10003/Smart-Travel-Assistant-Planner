@@ -1,0 +1,82 @@
+from models.trip import Trip
+from services.weather_api import WeatherService
+from services.fare_services import FareService
+from database.database import DatabaseManager
+
+
+class TravelPlanner:
+
+    def __init__(self):
+
+        self.weather = WeatherService()
+
+        self.fare = FareService()
+
+        self.database = DatabaseManager()
+
+    def create_trip(
+        self,
+        destination,
+        travel_date,
+        notes,
+        distance,
+        vehicle
+    ):
+
+        weather_result = (
+            self.weather.get_weather(
+                destination
+            )
+        )
+
+        fare_result = (
+            self.fare.estimate_fare(
+                distance,
+                vehicle
+            )
+        )
+
+        weather = None
+
+        if weather_result["success"]:
+
+            weather = (
+                f'{weather_result["temperature"]}°C '
+                f'({weather_result["condition"]})'
+            )
+
+        estimated_fare = None
+
+        if fare_result["success"]:
+
+            estimated_fare = (
+                fare_result[
+                    "estimated_fare"
+                ]
+            )
+
+        trip = Trip(
+
+            destination,
+
+            travel_date,
+
+            notes,
+
+            weather,
+
+            estimated_fare
+        )
+
+        self.database.save_trip(
+            trip
+        )
+
+        return trip
+
+    def history(self):
+
+        return (
+            self.database
+            .get_all_trips()
+        )
