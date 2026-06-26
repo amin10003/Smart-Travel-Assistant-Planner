@@ -137,4 +137,4 @@ Mohamed Ibrahim Yusuf
 
 ## License
 
-Educational Use
+This project has been licensed with MIT license
