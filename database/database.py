@@ -86,7 +86,14 @@ class DatabaseManager:
     def clear_history(self):
 
         self.cursor.execute("""
-            DELETE FROM travel_plan
-            """)
+        DELETE FROM travel_plan
+        """)
+
+        self.cursor.execute("""
+        DELETE FROM sqlite_sequence
+        WHERE name='travel_plan'
+        """)
+
+    
 
         self.connection.commit()
