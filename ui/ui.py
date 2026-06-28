@@ -26,9 +26,13 @@ class TravelAssistantUI:
     def build_ui(self):
 
         title = ctk.CTkLabel(
+
             self.window,
+
             text="Smart Travel Assistant",
+
             font=("Arial", 28)
+
         )
 
         title.pack(
@@ -36,8 +40,11 @@ class TravelAssistantUI:
         )
 
         self.departure = ctk.CTkEntry(
+
             self.window,
+
             placeholder_text="Departure Place",
+
             width=300
         )
 
@@ -46,8 +53,11 @@ class TravelAssistantUI:
         )
 
         self.destination = ctk.CTkEntry(
+
             self.window,
+
             placeholder_text="Final Destination",
+
             width=300
         )
 
@@ -56,14 +66,18 @@ class TravelAssistantUI:
         )
 
         date_label = ctk.CTkLabel(
+
             self.window,
+
             text="Travel Date"
         )
 
         date_label.pack()
 
         self.date = ctk.CTkEntry(
+
             self.window,
+
             width=300
         )
 
@@ -72,8 +86,11 @@ class TravelAssistantUI:
         )
 
         choose_button = ctk.CTkButton(
+
             self.window,
+
             text="Choose Date",
+
             command=self.open_calendar
         )
 
@@ -82,8 +99,11 @@ class TravelAssistantUI:
         )
 
         self.time = ctk.CTkEntry(
+
             self.window,
+
             placeholder_text="Time (HH:MM)",
+
             width=300
         )
 
@@ -92,8 +112,11 @@ class TravelAssistantUI:
         )
 
         self.notes = ctk.CTkEntry(
+
             self.window,
+
             placeholder_text="Notes",
+
             width=300
         )
 
@@ -102,7 +125,9 @@ class TravelAssistantUI:
         )
 
         self.vehicle = ctk.CTkOptionMenu(
+
             self.window,
+
             values=[
                 "Bus",
                 "Van",
@@ -115,8 +140,11 @@ class TravelAssistantUI:
         )
 
         self.trip_id = ctk.CTkEntry(
+
             self.window,
+
             placeholder_text="Trip ID to Delete",
+
             width=300
         )
 
@@ -125,40 +153,59 @@ class TravelAssistantUI:
         )
 
         ctk.CTkButton(
+
             self.window,
+
             text="Create Trip",
+
             command=self.create_trip
+
         ).pack(
             pady=5
         )
 
         ctk.CTkButton(
+
             self.window,
+
             text="Show History",
+
             command=self.show_history
+
         ).pack(
             pady=5
         )
 
         ctk.CTkButton(
+
             self.window,
+
             text="Delete One Trip",
+
             command=self.delete_trip
+
         ).pack(
             pady=5
         )
 
         ctk.CTkButton(
+
             self.window,
+
             text="Clear All Plans",
+
             command=self.clear_history
+
         ).pack(
             pady=5
         )
 
         self.output = ctk.CTkTextbox(
+
             self.window,
+
             width=650,
+
             height=300
         )
 
@@ -188,26 +235,18 @@ class TravelAssistantUI:
 
         x = (
             self.window.winfo_x()
-            + (
-                self.window.winfo_width()
-                // 2
-            )
-            - (
-                width
-                // 2
-            )
+            +
+            self.window.winfo_width() // 2
+            -
+            width // 2
         )
 
         y = (
             self.window.winfo_y()
-            + (
-                self.window.winfo_height()
-                // 2
-            )
-            - (
-                height
-                // 2
-            )
+            +
+            self.window.winfo_height() // 2
+            -
+            height // 2
         )
 
         popup.geometry(
@@ -217,8 +256,6 @@ class TravelAssistantUI:
         popup.transient(
             self.window
         )
-
-        popup.focus_force()
 
         calendar = Calendar(
 
@@ -254,16 +291,15 @@ class TravelAssistantUI:
 
             popup.destroy()
 
-        select_button = ctk.CTkButton(
+        ctk.CTkButton(
 
             popup,
 
             text="Select",
 
             command=save_date
-        )
 
-        select_button.pack(
+        ).pack(
             pady=10
         )
 
@@ -343,15 +379,6 @@ class TravelAssistantUI:
             "1.0",
             "end"
         )
-
-        if not trips:
-
-            self.output.insert(
-                "end",
-                "No saved trips."
-            )
-
-            return
 
         for row in trips:
 
