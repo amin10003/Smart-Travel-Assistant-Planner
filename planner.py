@@ -14,39 +14,106 @@ class TravelPlanner:
 
         self.database = DatabaseManager()
 
-    def create_trip(self, destination, travel_date, notes, distance, vehicle):
+    def create_trip(
 
-        weather_result = self.weather.get_weather(destination)
+        self,
 
-        fare_result = self.fare.estimate_fare(distance, vehicle)
+        departure,
+
+        travel_date,
+
+        destination,
+
+        notes,
+
+        vehicle
+
+    ):
+
+        weather_result = (
+
+            self.weather.get_weather(
+                destination
+            )
+
+        )
+
+        fare_result = (
+
+            self.fare.estimate_fare(
+
+                departure,
+
+                destination,
+
+                vehicle
+
+            )
+
+        )
 
         weather = None
 
         if weather_result["success"]:
 
             weather = (
-                f'{weather_result["temperature"]}°C ' f'({weather_result["condition"]})'
+
+                f'{weather_result["temperature"]}°C '
+
+                f'({weather_result["condition"]})'
             )
 
         estimated_fare = None
 
         if fare_result["success"]:
 
-            estimated_fare = fare_result["estimated_fare"]
+            estimated_fare = (
 
-        trip = Trip(destination, travel_date, notes, weather, estimated_fare)
+                fare_result[
+                    "estimated_fare"
+                ]
+            )
 
-        self.database.save_trip(trip)
+        trip = Trip(
+
+            departure,
+
+            travel_date,
+
+            destination,
+
+            notes,
+
+            weather,
+
+            estimated_fare
+        )
+
+        self.database.save_trip(
+            trip
+        )
 
         return trip
 
     def history(self):
 
-        return self.database.get_all_trips()
+        return (
 
-    def delete_trip(self, trip_id):
+            self.database
+            .get_all_trips()
+        )
 
-        self.database.delete_trip(trip_id)
+    def delete_trip(
+
+        self,
+
+        trip_id
+
+    ):
+
+        self.database.delete_trip(
+            trip_id
+        )
 
     def clear_history(self):
 

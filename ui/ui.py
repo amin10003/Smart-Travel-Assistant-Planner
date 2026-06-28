@@ -35,9 +35,19 @@ class TravelAssistantUI:
             pady=20
         )
 
+        self.departure = ctk.CTkEntry(
+            self.window,
+            placeholder_text="Departure Place",
+            width=300
+        )
+
+        self.departure.pack(
+            pady=8
+        )
+
         self.destination = ctk.CTkEntry(
             self.window,
-            placeholder_text="Destination",
+            placeholder_text="Final Destination",
             width=300
         )
 
@@ -91,16 +101,6 @@ class TravelAssistantUI:
             pady=8
         )
 
-        self.distance = ctk.CTkEntry(
-            self.window,
-            placeholder_text="Distance (km)",
-            width=300
-        )
-
-        self.distance.pack(
-            pady=8
-        )
-
         self.vehicle = ctk.CTkOptionMenu(
             self.window,
             values=[
@@ -124,43 +124,35 @@ class TravelAssistantUI:
             pady=8
         )
 
-        create_button = ctk.CTkButton(
+        ctk.CTkButton(
             self.window,
             text="Create Trip",
             command=self.create_trip
-        )
-
-        create_button.pack(
+        ).pack(
             pady=5
         )
 
-        history_button = ctk.CTkButton(
+        ctk.CTkButton(
             self.window,
             text="Show History",
             command=self.show_history
-        )
-
-        history_button.pack(
+        ).pack(
             pady=5
         )
 
-        delete_button = ctk.CTkButton(
+        ctk.CTkButton(
             self.window,
             text="Delete One Trip",
             command=self.delete_trip
-        )
-
-        delete_button.pack(
+        ).pack(
             pady=5
         )
 
-        clear_button = ctk.CTkButton(
+        ctk.CTkButton(
             self.window,
             text="Clear All Plans",
             command=self.clear_history
-        )
-
-        clear_button.pack(
+        ).pack(
             pady=5
         )
 
@@ -184,20 +176,49 @@ class TravelAssistantUI:
             "Select Date"
         )
 
+        popup.resizable(
+            False,
+            False
+        )
+
+        width = 320
+        height = 350
+
+        self.window.update_idletasks()
+
+        x = (
+            self.window.winfo_x()
+            + (
+                self.window.winfo_width()
+                // 2
+            )
+            - (
+                width
+                // 2
+            )
+        )
+
+        y = (
+            self.window.winfo_y()
+            + (
+                self.window.winfo_height()
+                // 2
+            )
+            - (
+                height
+                // 2
+            )
+        )
+
         popup.geometry(
-            "320x350"
+            f"{width}x{height}+{x}+{y}"
         )
 
         popup.transient(
             self.window
         )
 
-        popup.resizable(
-            False,
-            False
-        )
-
-        popup.update()
+        popup.focus_force()
 
         calendar = Calendar(
 
@@ -209,9 +230,13 @@ class TravelAssistantUI:
         )
 
         calendar.pack(
+
             expand=True,
+
             fill="both",
+
             padx=10,
+
             pady=10
         )
 
@@ -229,7 +254,7 @@ class TravelAssistantUI:
 
             popup.destroy()
 
-        select_button = tk.Button(
+        select_button = ctk.CTkButton(
 
             popup,
 
@@ -243,6 +268,11 @@ class TravelAssistantUI:
         )
 
     def clear_inputs(self):
+
+        self.departure.delete(
+            0,
+            "end"
+        )
 
         self.destination.delete(
             0,
@@ -264,26 +294,19 @@ class TravelAssistantUI:
             "end"
         )
 
-        self.distance.delete(
-            0,
-            "end"
-        )
-
     def create_trip(self):
 
         try:
 
             trip = self.planner.create_trip(
 
-                self.destination.get(),
+                self.departure.get(),
 
                 f"{self.date.get()} {self.time.get()}",
 
-                self.notes.get(),
+                self.destination.get(),
 
-                float(
-                    self.distance.get()
-                ),
+                self.notes.get(),
 
                 self.vehicle.get()
             )
@@ -333,18 +356,19 @@ class TravelAssistantUI:
         for row in trips:
 
             self.output.insert(
+
                 "end",
 
                 f"""
 ID: {row[0]}
-Destination: {row[1]}
-Date: {row[2]}
-Weather: {row[3]}
-Fare: {row[4]}
-Notes: {row[5]}
+Departure: {row[1]}
+Destination: {row[2]}
+Date: {row[3]}
+Weather: {row[4]}
+Fare: {row[5]}
+Notes: {row[6]}
 
 --------------------
-
 """
             )
 
@@ -352,12 +376,11 @@ Notes: {row[5]}
 
         try:
 
-            trip_id = int(
-                self.trip_id.get()
-            )
-
             self.planner.delete_trip(
-                trip_id
+
+                int(
+                    self.trip_id.get()
+                )
             )
 
             self.trip_id.delete(

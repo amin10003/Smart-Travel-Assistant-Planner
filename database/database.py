@@ -5,30 +5,36 @@ class DatabaseManager:
 
     def __init__(self):
 
-        self.connection = sqlite3.connect("database/travel.db")
+        self.connection = sqlite3.connect(
+            "database/travel.db"
+        )
 
-        self.cursor = self.connection.cursor()
+        self.cursor = (
+            self.connection.cursor()
+        )
 
         self.create_table()
 
     def create_table(self):
 
         self.cursor.execute("""
-            CREATE TABLE IF NOT EXISTS travel_plan(
+        CREATE TABLE IF NOT EXISTS travel_plan(
 
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-                destination TEXT,
+            departure TEXT,
 
-                travel_date TEXT,
+            destination TEXT,
 
-                weather TEXT,
+            travel_date TEXT,
 
-                estimated_fare REAL,
+            weather TEXT,
 
-                notes TEXT
-            )
-            """)
+            estimated_fare REAL,
+
+            notes TEXT
+        )
+        """)
 
         self.connection.commit()
 
@@ -37,6 +43,8 @@ class DatabaseManager:
         self.cursor.execute(
             """
             INSERT INTO travel_plan(
+
+                departure,
 
                 destination,
 
@@ -50,50 +58,61 @@ class DatabaseManager:
 
             )
 
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?)
             """,
             (
+                trip.departure,
                 trip.destination,
                 trip.travel_date,
                 trip.weather,
                 trip.estimated_fare,
-                trip.notes,
-            ),
+                trip.notes
+            )
         )
 
         self.connection.commit()
 
     def get_all_trips(self):
 
-        self.cursor.execute("""
-            SELECT * FROM travel_plan
-            """)
+        self.cursor.execute(
+            """
+            SELECT *
+            FROM travel_plan
+            """
+        )
 
-        return self.cursor.fetchall()
+        return (
+            self.cursor.fetchall()
+        )
 
-    def delete_trip(self, trip_id):
+    def delete_trip(
+        self,
+        trip_id
+    ):
 
         self.cursor.execute(
             """
             DELETE FROM travel_plan
             WHERE id=?
             """,
-            (trip_id,),
+            (trip_id,)
         )
 
         self.connection.commit()
 
     def clear_history(self):
 
-        self.cursor.execute("""
-        DELETE FROM travel_plan
-        """)
+        self.cursor.execute(
+            """
+            DELETE FROM travel_plan
+            """
+        )
 
-        self.cursor.execute("""
-        DELETE FROM sqlite_sequence
-        WHERE name='travel_plan'
-        """)
-
-    
+        self.cursor.execute(
+            """
+            DELETE FROM sqlite_sequence
+            WHERE name='travel_plan'
+            """
+        )
 
         self.connection.commit()
