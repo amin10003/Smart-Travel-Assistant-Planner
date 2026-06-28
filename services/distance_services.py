@@ -1,7 +1,12 @@
 import requests
+from services.geocode_service import GeocodeService
 
 
 class DistanceService:
+
+    def __init__(self):
+
+        self.geo = GeocodeService()
 
     def get_distance(
         self,
@@ -11,23 +16,78 @@ class DistanceService:
 
         try:
 
-            url = (
-                "https://router.project-osrm.org"
-                "/route/v1/driving/"
+            start = self.geo.get_coordinates(
+                departure
             )
 
-            query = (
-                f"{departure};{destination}"
+            end = self.geo.get_coordinates(
+                destination
+            )
+
+            if not start["success"]:
+
+                return start
+
+            if not end["success"]:
+
+                return end
+
+            start_lon = start["longitude"]
+            start_lat = start["latitude"]
+
+            end_lon = end["longitude"]
+            end_lat = end["latitude"]
+
+            url = (
+
+                "https://router.project-osrm.org"
+
+                f"/route/v1/driving/"
+
+                f"{start_lon},{start_lat};"
+
+                f"{end_lon},{end_lat}"
+
             )
 
             response = requests.get(
-                url + query
+                url
+            )
+
+            data = response.json()
+
+            if (
+                data.get("code")
+                !=
+                "Ok"
+            ):
+
+                return {
+
+                    "success": False,
+
+                    "message":
+                    "Unable to calculate route"
+                }
+
+            meters = (
+
+                data["routes"][0]
+
+                ["distance"]
+
+            )
+
+            km = round(
+                meters / 1000,
+                2
             )
 
             return {
-                "success": False,
-                "message":
-                "Need coordinates conversion first"
+
+                "success": True,
+
+                "distance": km
             }
 
         except Exception as error:
