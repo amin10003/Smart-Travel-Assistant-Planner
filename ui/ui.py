@@ -22,74 +22,123 @@ class TravelAssistantUI:
         )
 
         self.window.geometry(
-            "900x900"
+            "1400x850"
         )
 
         self.window.configure(
-            fg_color="#151821"
+            fg_color="#111827"
         )
 
         self.build_ui()
 
     def build_ui(self):
 
-        self.card = ctk.CTkFrame(
+        title = ctk.CTkLabel(
 
             self.window,
 
-            width=720,
+            text="✈ Smart Travel Assistant",
+
+            font=(
+
+                "Arial",
+
+                34,
+
+                "bold"
+            )
+        )
+
+        title.pack(
+            pady=(20, 5)
+        )
+
+        subtitle = ctk.CTkLabel(
+
+            self.window,
+
+            text="Plan • Weather • Fare • History",
+
+            text_color="gray"
+        )
+
+        subtitle.pack()
+
+        main = ctk.CTkFrame(
+
+            self.window,
+
+            fg_color="transparent"
+        )
+
+        main.pack(
+
+            fill="both",
+
+            expand=True,
+
+            padx=20,
+
+            pady=20
+        )
+
+        left = ctk.CTkFrame(
+
+            main,
+
+            width=450,
 
             corner_radius=20
         )
 
-        self.card.pack(
+        left.pack(
 
-            pady=30,
+            side="left",
 
-            padx=30,
+            fill="y",
+
+            padx=(0, 15)
+        )
+
+        right = ctk.CTkFrame(
+
+            main,
+
+            corner_radius=20
+        )
+
+        right.pack(
+
+            side="right",
 
             fill="both",
 
             expand=True
         )
 
-        title = ctk.CTkLabel(
+        ctk.CTkLabel(
 
-            self.card,
+            left,
 
-            text="✈ Smart Travel Assistant",
+            text="Trip Operations",
 
             font=(
                 "Arial",
-                34,
+                24,
                 "bold"
             )
-        )
 
-        title.pack(
-            pady=(30, 10)
-        )
-
-        subtitle = ctk.CTkLabel(
-
-            self.card,
-
-            text="Plan trips • Check weather • Estimate fare",
-
-            text_color="gray"
-        )
-
-        subtitle.pack(
-            pady=(0, 25)
+        ).pack(
+            pady=20
         )
 
         self.departure = ctk.CTkEntry(
 
-            self.card,
+            left,
 
             placeholder_text="Departure Place",
 
-            width=450,
+            width=360,
 
             height=45
         )
@@ -100,11 +149,11 @@ class TravelAssistantUI:
 
         self.destination = ctk.CTkEntry(
 
-            self.card,
+            left,
 
             placeholder_text="Final Destination",
 
-            width=450,
+            width=360,
 
             height=45
         )
@@ -115,11 +164,11 @@ class TravelAssistantUI:
 
         self.date = ctk.CTkEntry(
 
-            self.card,
+            left,
 
             placeholder_text="Travel Date",
 
-            width=450,
+            width=360,
 
             height=45
         )
@@ -130,13 +179,11 @@ class TravelAssistantUI:
 
         ctk.CTkButton(
 
-            self.card,
+            left,
 
-            text="📅 Choose Date",
+            text="📅 Select Date",
 
-            width=220,
-
-            height=40,
+            width=200,
 
             command=self.open_calendar
 
@@ -146,11 +193,11 @@ class TravelAssistantUI:
 
         self.time = ctk.CTkEntry(
 
-            self.card,
+            left,
 
             placeholder_text="Time (HH:MM)",
 
-            width=450,
+            width=360,
 
             height=45
         )
@@ -161,11 +208,11 @@ class TravelAssistantUI:
 
         self.notes = ctk.CTkEntry(
 
-            self.card,
+            left,
 
             placeholder_text="Trip Notes",
 
-            width=450,
+            width=360,
 
             height=45
         )
@@ -176,17 +223,17 @@ class TravelAssistantUI:
 
         self.vehicle = ctk.CTkOptionMenu(
 
-            self.card,
-
-            width=450,
-
-            height=45,
+            left,
 
             values=[
                 "Bus",
                 "Van",
                 "Taxi"
-            ]
+            ],
+
+            width=360,
+
+            height=45
         )
 
         self.vehicle.pack(
@@ -195,11 +242,11 @@ class TravelAssistantUI:
 
         self.trip_id = ctk.CTkEntry(
 
-            self.card,
+            left,
 
-            placeholder_text="Trip ID to Delete",
+            placeholder_text="Trip ID To Delete",
 
-            width=450,
+            width=360,
 
             height=45
         )
@@ -208,94 +255,105 @@ class TravelAssistantUI:
             pady=8
         )
 
-        button_frame = ctk.CTkFrame(
-
-            self.card,
-
-            fg_color="transparent"
-        )
-
-        button_frame.pack(
-            pady=20
-        )
-
         ctk.CTkButton(
 
-            button_frame,
+            left,
 
-            text="Create",
+            text="Create Trip",
 
-            width=150,
+            height=45,
 
             command=self.create_trip
 
-        ).grid(
-            row=0,
-            column=0,
-            padx=8
+        ).pack(
+            pady=8
         )
 
         ctk.CTkButton(
 
-            button_frame,
+            left,
 
-            text="History",
+            text="Show History",
 
-            width=150,
+            height=45,
 
             command=self.show_history
 
-        ).grid(
-            row=0,
-            column=1,
-            padx=8
+        ).pack(
+            pady=8
         )
 
         ctk.CTkButton(
 
-            button_frame,
+            left,
 
-            text="Delete",
+            text="Delete Trip",
 
-            width=150,
+            height=45,
 
             command=self.delete_trip
 
-        ).grid(
-            row=0,
-            column=2,
-            padx=8
+        ).pack(
+            pady=8
         )
 
         ctk.CTkButton(
 
-            button_frame,
+            left,
 
-            text="Clear",
+            text="Clear All",
 
-            width=150,
+            height=45,
+
+            fg_color="#c0392b",
+
+            hover_color="#96281b",
 
             command=self.clear_history
 
-        ).grid(
-            row=0,
-            column=3,
-            padx=8
+        ).pack(
+            pady=8
+        )
+
+        ctk.CTkLabel(
+
+            right,
+
+            text="Results & Trip History",
+
+            font=(
+
+                "Arial",
+
+                24,
+
+                "bold"
+            )
+
+        ).pack(
+            pady=20
         )
 
         self.output = ctk.CTkTextbox(
 
-            self.card,
+            right,
 
-            width=700,
+            width=750,
 
-            height=220,
+            height=650,
 
             corner_radius=15
         )
 
         self.output.pack(
-            pady=20
+
+            fill="both",
+
+            expand=True,
+
+            padx=20,
+
+            pady=10
         )
 
     def open_calendar(self):
@@ -307,22 +365,40 @@ class TravelAssistantUI:
         width = 320
         height = 350
 
-        self.window.update_idletasks()
+        self.window.update()
 
         x = (
+
             self.window.winfo_x()
-            + self.window.winfo_width() // 2
-            - width // 2
+
+            +
+
+            self.window.winfo_width() // 2
+
+            -
+
+            width // 2
         )
 
         y = (
+
             self.window.winfo_y()
-            + self.window.winfo_height() // 2
-            - height // 2
+
+            +
+
+            self.window.winfo_height() // 2
+
+            -
+
+            height // 2
         )
 
         popup.geometry(
             f"{width}x{height}+{x}+{y}"
+        )
+
+        popup.transient(
+            self.window
         )
 
         calendar = Calendar(
@@ -335,7 +411,9 @@ class TravelAssistantUI:
         )
 
         calendar.pack(
+
             fill="both",
+
             expand=True
         )
 
@@ -409,7 +487,9 @@ class TravelAssistantUI:
             )
 
             self.output.insert(
+
                 "end",
+
                 trip.display_trip()
             )
 
@@ -444,14 +524,26 @@ class TravelAssistantUI:
 
                 f"""
 ID: {row[0]}
-Departure: {row[1]}
-Destination: {row[2]}
-Date: {row[3]}
-Weather: {row[4]}
-Fare: {row[5]}
-Notes: {row[6]}
 
-────────────────────
+Departure:
+{row[1]}
+
+Destination:
+{row[2]}
+
+Date:
+{row[3]}
+
+Weather:
+{row[4]}
+
+Fare:
+KES {row[5]}
+
+Notes:
+{row[6]}
+
+━━━━━━━━━━━━━━
 """
             )
 
@@ -460,14 +552,10 @@ Notes: {row[6]}
         try:
 
             self.planner.delete_trip(
+
                 int(
                     self.trip_id.get()
                 )
-            )
-
-            self.trip_id.delete(
-                0,
-                "end"
             )
 
             self.show_history()
@@ -480,7 +568,9 @@ Notes: {row[6]}
             )
 
             self.output.insert(
+
                 "end",
+
                 "Enter valid Trip ID"
             )
 
@@ -494,7 +584,9 @@ Notes: {row[6]}
         )
 
         self.output.insert(
+
             "end",
+
             "All plans deleted."
         )
 
